@@ -15,7 +15,8 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/books", bookList.GetBook)
+	app.Get("/books", bookList.GetBooks)
+	app.Get("/books/:id", bookList.GetBook)
 
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World!")
