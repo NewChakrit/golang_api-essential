@@ -23,12 +23,10 @@ func Books() {
 }
 
 func GetBooks(c *fiber.Ctx) error {
-	Books()
 	return c.JSON(BookLists)
 }
 
 func GetBook(c *fiber.Ctx) error {
-	Books()
 	bookId, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
@@ -44,4 +42,16 @@ func GetBook(c *fiber.Ctx) error {
 	//return c.SendStatus(fiber.StatusNotFound)
 
 	return c.Status(fiber.StatusNotFound).SendString("Data not found")
+}
+
+func CreateBook(c *fiber.Ctx) error {
+	book := new(Book)
+
+	if err := c.BodyParser(book); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	BookLists = append(BookLists, *book)
+
+	return c.JSON(BookLists)
 }
