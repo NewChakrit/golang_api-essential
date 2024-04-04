@@ -55,3 +55,25 @@ func CreateBook(c *fiber.Ctx) error {
 
 	return c.JSON(BookLists)
 }
+
+func UpdateBook(c *fiber.Ctx) error {
+	bookId, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	bookUpdate := new(Book)
+	if err := c.BodyParser(bookUpdate); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	for i, book := range BookLists {
+		if book.ID == bookId {
+			BookLists[i].Title = bookUpdate.Title
+			BookLists[i].Author = bookUpdate.Author
+			return c.JSON(BookLists[i])
+		}
+	}
+
+	return c.Status(fiber.StatusNotFound).SendString("Data not found")
+}

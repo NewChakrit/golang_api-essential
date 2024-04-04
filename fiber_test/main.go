@@ -20,6 +20,7 @@ func main() {
 	app.Get("/books", bookList.GetBooks)
 	app.Get("/books/:id", bookList.GetBook)
 	app.Post("/books", bookList.CreateBook)
+	app.Put("/books/:id", bookList.UpdateBook)
 
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World!")
