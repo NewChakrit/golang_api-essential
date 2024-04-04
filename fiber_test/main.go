@@ -21,6 +21,7 @@ func main() {
 	app.Get("/books/:id", bookList.GetBook)
 	app.Post("/books", bookList.CreateBook)
 	app.Put("/books/:id", bookList.UpdateBook)
+	app.Delete("/books/:id", bookList.DeleteBook)
 
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World!")

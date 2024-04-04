@@ -77,3 +77,26 @@ func UpdateBook(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusNotFound).SendString("Data not found")
 }
+
+func DeleteBook(c *fiber.Ctx) error {
+	bookId, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	bookDelete := new(Book)
+	if err := c.BodyParser(bookDelete); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+	for i, book := range BookLists {
+		if book.ID == bookId {
+			BookLists = append(BookLists[:i], BookLists[i+1:]...) // ... คือกระจาย slice element แต่ละตัว แยกออกจากกัน แล้วเอามาต่อกันอีกที่ (เหมือนเอา element แต่ละตัวมาทำการ append แยกกันอีกที )
+			//if i = 3
+			// [1,2,3,4,5,6]
+			// [1,2] + [4,5,6] = [1,2,4,5,6]
+			return c.SendStatus(fiber.StatusNoContent)
+		}
+	}
+
+	return c.Status(fiber.StatusNotFound).SendString("Data not found")
+}
