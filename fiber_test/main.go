@@ -1,6 +1,9 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/newchakrit/fiber_test/bookList"
+)
 
 func main() {
 	//http.HandleFunc("/hello", helloHandler)
@@ -11,6 +14,8 @@ func main() {
 	//}
 
 	app := fiber.New()
+
+	app.Get("/books", bookList.GetBook)
 
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World!")
