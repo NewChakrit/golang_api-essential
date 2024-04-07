@@ -3,14 +3,19 @@ package main
 // cml run :  nodemon --exec go run . --signal SIGTERM
 
 import (
+	"log"
+	"os"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/jwt/v2"
 	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
+
 	"github.com/newchakrit/fiber_test/bookList"
 	"github.com/newchakrit/fiber_test/env"
+	"github.com/newchakrit/fiber_test/login"
 	"github.com/newchakrit/fiber_test/middleware"
 	"github.com/newchakrit/fiber_test/views"
-	"log"
 )
 
 func main() {
@@ -40,9 +45,17 @@ func main() {
 
 	bookList.Books()
 
+	// -- Login --
+	app.Post("login", login.Login)
+
 	// -- Middleware --
 	//middleware คือ ทางผ่านของการยิง request เข้ามา
 	app.Use(middleware.CheckMiddleware) // ขั้นการยิง api ด้วย middleware
+
+	// -- JWT Middleware --
+	app.Use(jwtware.New(jwtware.Config{
+		SigningKey: []byte(os.Getenv("JWT_SECRET")),
+	}))
 
 	app.Get("/books", bookList.GetBooks)
 	app.Get("/books/:id", bookList.GetBook)
