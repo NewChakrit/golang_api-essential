@@ -22,6 +22,16 @@ func Books() {
 	BookLists = append(BookLists, Book{ID: 5, Title: "Invest", Author: "New"})
 }
 
+// Handler functions
+// GetBooks godoc
+// @Summary get all books
+// @Description Get details of all books
+// @Tags books
+// @Accept json
+// @security ApliKeyAuth
+// @Success 200 {array} book
+// @Router /book [get]
+
 func GetBooks(c *fiber.Ctx) error {
 	return c.JSON(BookLists)
 }

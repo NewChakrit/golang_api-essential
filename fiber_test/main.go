@@ -3,6 +3,7 @@ package main
 // cml run :  nodemon --exec go run . --signal SIGTERM
 
 import (
+	"github.com/gofiber/swagger"
 	"log"
 	"os"
 
@@ -10,13 +11,24 @@ import (
 	"github.com/gofiber/jwt/v2"
 	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
-
 	"github.com/newchakrit/fiber_test/bookList"
+	_ "github.com/newchakrit/fiber_test/docs"
 	"github.com/newchakrit/fiber_test/env"
 	"github.com/newchakrit/fiber_test/login"
 	"github.com/newchakrit/fiber_test/middleware"
 	"github.com/newchakrit/fiber_test/views"
 )
+
+// @title Book API
+// @description This is a sample server for a book API.
+// @version 1.0
+// @termOfService http:swagger.io/terms/
+// @contect.name API Support
+// @contect.email fiber@swagger.io
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/license/LICENSE-2.0.html
+// @host localhost:8080
+// @BasePath /
 
 func main() {
 	if err := godotenv.Load(); err != nil {
@@ -36,6 +48,10 @@ func main() {
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
+
+	// -- Swager --
+
+	app.Get("/swagger/*", swagger.HandlerDefault) // default
 
 	// -- ENV --
 	app.Get("/config", env.GetEnv)
