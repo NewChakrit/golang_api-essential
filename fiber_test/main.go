@@ -5,11 +5,18 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
+	"github.com/joho/godotenv"
 	"github.com/newchakrit/fiber_test/bookList"
+	"github.com/newchakrit/fiber_test/env"
 	"github.com/newchakrit/fiber_test/views"
+	"log"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("load .env error")
+	}
+
 	//http.HandleFunc("/hello", helloHandler)
 
 	//fmt.Printf("Starting sever at port 8080\n")
@@ -17,13 +24,17 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	// View Template
+	// -- View Template --
 	engine := html.New("./views", ".html")
 
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
 
+	// -- ENV --
+	app.Get("/config", env.GetEnv)
+
+	// -- Book List CRUD --
 	//app := fiber.New()
 
 	bookList.Books()
