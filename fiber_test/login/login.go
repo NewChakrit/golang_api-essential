@@ -11,11 +11,13 @@ import (
 type User struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	Role     string `json:"role"`
 }
 
 var memberUser = User{ // defualt
 	Email:    "sudlhor@gmail.com",
 	Password: "password",
+	Role:     "Admin",
 }
 
 func Login(c *fiber.Ctx) error {

@@ -50,12 +50,14 @@ func main() {
 
 	// -- Middleware --
 	//middleware คือ ทางผ่านของการยิง request เข้ามา
-	app.Use(middleware.CheckMiddleware) // ขั้นการยิง api ด้วย middleware
+	//app.Use(middleware.CheckMiddleware) // ขั้นการยิง api ด้วย middleware
 
 	// -- JWT Middleware --
 	app.Use(jwtware.New(jwtware.Config{
 		SigningKey: []byte(os.Getenv("JWT_SECRET")),
 	}))
+
+	app.Use(middleware.CheckMiddleware)
 
 	app.Get("/books", bookList.GetBooks)
 	app.Get("/books/:id", bookList.GetBook)
