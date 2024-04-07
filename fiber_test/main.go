@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/newchakrit/fiber_test/bookList"
 	"github.com/newchakrit/fiber_test/env"
+	"github.com/newchakrit/fiber_test/middleware"
 	"github.com/newchakrit/fiber_test/views"
 	"log"
 )
@@ -38,6 +39,10 @@ func main() {
 	//app := fiber.New()
 
 	bookList.Books()
+
+	// -- Middleware --
+	//middleware คือ ทางผ่านของการยิง request เข้ามา
+	app.Use(middleware.CheckMiddleware) // ขั้นการยิง api ด้วย middleware
 
 	app.Get("/books", bookList.GetBooks)
 	app.Get("/books/:id", bookList.GetBook)
