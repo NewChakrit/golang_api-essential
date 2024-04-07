@@ -79,6 +79,7 @@ func UpdateBook(c *fiber.Ctx) error {
 }
 
 func DeleteBook(c *fiber.Ctx) error {
+
 	bookId, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())

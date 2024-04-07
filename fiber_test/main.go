@@ -1,8 +1,12 @@
 package main
 
+// cml run :  nodemon --exec go run . --signal SIGTERM
+
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 	"github.com/newchakrit/fiber_test/bookList"
+	"github.com/newchakrit/fiber_test/views"
 )
 
 func main() {
@@ -13,7 +17,14 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	app := fiber.New()
+	// View Template
+	engine := html.New("./views", ".html")
+
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
+
+	//app := fiber.New()
 
 	bookList.Books()
 
@@ -22,6 +33,8 @@ func main() {
 	app.Post("/books", bookList.CreateBook)
 	app.Put("/books/:id", bookList.UpdateBook)
 	app.Delete("/books/:id", bookList.DeleteBook)
+
+	app.Get("test-html", views.TestHTML)
 
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World!")
